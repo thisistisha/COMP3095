@@ -6,12 +6,13 @@ import ca.gbc.productservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController //mark this calss as a rest controller,
+@RestController //mark this class as a rest controller,
 // allowing it to handle http request and respond with json or xml
 @RequestMapping("/api/product")  //base url for all the endpoints in this controller.
 //requests to /api/product will be mapped here
@@ -22,9 +23,24 @@ public class ProductController {
 
     @PostMapping          // Maps HTTP POST requests to this method. Typically used for creating new resources. new
     @ResponseStatus(HttpStatus.CREATED) //// Maps HTTP GET requests to this method. Typically used to retrieve resources. new.
-    public void createProduct(@RequestBody ProductRequest productRequest) { //call the createProduct,    productRequest in the requestBody
+    // Sets the response status to 201 Created when a product is successfully created.
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) { //call the createProduct,    productRequest in the requestBody
     //The data is sent in the body of the request, so it’s not visible in the URL.   //dto post request  with the payload of product request
-        productService.createProduct(productRequest);
+    // Sets the response status to 201 Created when a product is successfully created.
+        ProductResponse createdProduct = productService.createProduct(productRequest);
+
+
+        // Set the headers (e.g., Location header if you want to indicate the URL of the created resource)
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/api/product" + createdProduct.id());
+
+        // Return the ResponseEntity with the 201 Created status, response body, and headers.
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_JSON)// Set content type to JSON body(created Product); // Return the created product in the response body
+                .body(createdProduct);
+
     }
 
     @GetMapping                 //// Maps HTTP GET requests to this method. Typically used to retrieve resources. new.
