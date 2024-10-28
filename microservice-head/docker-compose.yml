@@ -1,0 +1,36 @@
+version : '3.9'
+
+services:
+
+  product-service:
+    image: product-service
+    ports:
+      - "8084:8084"  #external:internal  when communicating from host machine:
+    build:
+      context: ./product-service    #directory where the Dockerfile resides
+      dockerfile: ./Dockerfile    #specify dockerfile for use to build image
+    container_name: product-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    depends_on:
+      - mongodb
+    networks:
+      - spring
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rootadmin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./data/mongo/products:/data/db    #locally creating a data folder and subfolders
+        # writing virtually logically in data/db but relaistically in mongo/products
+      - ./init/mongo/docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        #mapping host to the containerized env  : read and execute
+    #restart: unless-stopped
+    command: mongod -auth
+    networks:
+      - spring
