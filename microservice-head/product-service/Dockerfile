@@ -6,7 +6,7 @@ COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN gradle biuld -x test    #excluding test ones
+RUN gradle build -x test    #excluding test ones
 
 #package stage
 
@@ -14,9 +14,9 @@ FROM openjdk:22-jdk
 
 RUN mkdir /app
 
-COPY --from=-builder /home/gradle/src/build/libs/*.jar /app/product-service.jar
+COPY --from=builder /home/gradle/src/build/libs/*.jar /app/product-service.jar
 
-ENV MONGO_DB_USERNAME=admin \
+ENV MONGO_DB_USERNAME=rootadmin \
     MONGO_DB_PWD=password
 
 EXPOSE 8084
