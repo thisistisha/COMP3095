@@ -38,7 +38,7 @@ services:
         #Initialize mongodb with data from this script
         #mapping host to the containerized env  : read and only
     #restart: unless-stopped
-    command: mongod --auth
+    command: mongod -auth
     networks:
       - spring
 
@@ -50,8 +50,9 @@ services:
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=rootadmin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=password
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_SERVER=mongodb   #connect mongo-express to the mongodb container by name
     container_name: mongo-express-service
+    restart: unless-stopped
     depends_on:
       - mongodb
     networks:
