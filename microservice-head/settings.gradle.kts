@@ -1,3 +1,5 @@
 rootProject.name = "microservice-head"
 
-include("product-service")
+include("product-service", "order-service")
+
+
