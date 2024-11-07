@@ -1,4 +1,4 @@
-#docker-compose -p postgres-single -f docker-compose.yml
+#docker-compose -p postgres-single -f docker-compose.yml up -d
 
 version : '3.9'
 

@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .orderNumber(UUID.randomUUID().toString())
                 .price(orderRequest.price())
-                .skucode(orderRequest.skuCode())
+                .skuCode(orderRequest.skuCode())
                 .quantity(orderRequest.quantity())
                 .build();
 

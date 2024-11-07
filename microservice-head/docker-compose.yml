@@ -34,11 +34,11 @@ services:
     volumes:
       - ./data/mongo/products:/data/db    #locally creating a data folder and subfolders
         # writing virtually logically in data/db but relaistically in mongo/products
-      - ./init/mongo/docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./init/mongo/docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
         #Initialize mongodb with data from this script
         #mapping host to the containerized env  : read and only
     #restart: unless-stopped
-    command: mongod -auth
+    #command: mongod -auth
     networks:
       - spring
 

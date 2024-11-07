@@ -1,5 +1,5 @@
-#docker-compose -p postgres-single -f docker-compose.yml
-
+#docker-compose -p postgres-single -f docker-compose.yml up -d
+# docker-compose -p local-docker-file/postgres/postgres-single -f docker-compose.yml up -d
 version : '3.9'
 
 services:
@@ -12,10 +12,14 @@ services:
     environment:
       - POSTGRES_USER=rootadmin
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=inventory-service
+      #- POSTGRES_DB=inventory-service
+      #- PGDATA: /data/postgres
+
     volumes:
       - ./data/inventory:/var/lib/postgresql/data
       - ./init/inventory/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+ #for order service not want it to be running while doin inventory service
  # postgres:
   #  image: postgres
   #  ports:
