@@ -22,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void placeOrder(OrderRequest orderRequest) {
 
+        //check inventory
         Order order = Order.builder()
                 .orderNumber(UUID.randomUUID().toString())
                 .price(orderRequest.price())
