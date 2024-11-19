@@ -7,7 +7,7 @@ services:
   postgres:
     image: postgres
     ports:
-      - "5432:5432"
+      - "5439:5432"
     container_name: postgres-single
     environment:
       - POSTGRES_USER=rootadmin

@@ -27,6 +27,7 @@ repositories {
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:2023.0.3")
+        mavenBom("org.testcontainers:testcontainers-bom:1.18.3")   //additional  BOM
     }
 }
 
@@ -46,6 +47,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    testImplementation("io.rest-assured:rest-assured:5.2.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

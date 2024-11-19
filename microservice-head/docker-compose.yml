@@ -15,7 +15,7 @@ services:
     build:
       context: ./product-service    #directory where the Dockerfile resides
       dockerfile: ./Dockerfile    #specify dockerfile for use to build image
-    container_name: product-service
+    container_name: product-service-first
     environment:
       SPRING_PROFILES_ACTIVE: docker
     depends_on:
@@ -25,7 +25,7 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongodb-service
     ports:
       - "27017:27017"
     environment:
@@ -51,10 +51,81 @@ services:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=rootadmin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=password
       - ME_CONFIG_MONGODB_SERVER=mongodb   #connect mongo-express to the mongodb container by name
-    container_name: mongo-express-service
+    container_name: mongo-express-serv
     restart: unless-stopped
     depends_on:
       - mongodb
+    networks:
+      - spring
+
+  postgres:
+    image: postgres:11-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: rootadmin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres_db
+    #volumes:
+     # - ./data/postgres:/var/lib/postgresql/data
+     # - ./init/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - spring
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8888:80"
+    container_name: pgadmin-container
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.ca
+      - PGADMIN_DEFAULT_PASSWORD=password
+    depends_on:
+      - postgres
+    networks:
+      - spring
+
+  inventory-service:
+    build:
+      context: ./inventory-service
+      dockerfile: Dockerfile
+    image: inventory-service:1.0
+    ports:
+      - "5433:5432"
+    container_name: postgres-inventory-service
+    environment:
+      - POSTGRES_USER=rootadmin
+      - POSTGRES_PASSWORD=password
+      - SPRING_PROFILES_ACTIVE=docker
+      #- POSTGRES_DB=inventory-service
+      #- PGDATA: /data/postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init/postgres/inventory/init.sql:/docker-entrypoint-initdb.d/init.sql
+    depends_on:
+      - postgres
+    networks:
+      - spring
+
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    image: order-service:1.0
+    ports:
+      - "5434:5432"
+    container_name: postgres-order-service
+    environment:
+      - POSTGRES_USER=rootadmin
+      - POSTGRES_PASSWORD=password
+      - SPRING_PROFILES_ACTIVE=docker
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init/postgres/order/init.sql:/docker-entrypoint-initdb.d/init.sql
+    depends_on:
+      - postgres
     networks:
       - spring
 
@@ -64,5 +135,5 @@ volumes:
     driver: local
 
 networks:
-    spring:
-      driver: bridge
+  spring:
+    driver: bridge
