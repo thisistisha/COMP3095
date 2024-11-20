@@ -15,8 +15,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    //don't require authentication
+    private final String[] noauthResourceUris = {
+            "/swagger-ui",
+            "/swagger-ui/*",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/api-docs/**",
+            "/aggregate/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+
 
         log.info("Initializing Security Filter Chain..");
 
@@ -25,6 +36,8 @@ public class SecurityConfig {
                 //.authorizeHttpRequests( authorize -> authorize
                   //      .anyRequest().permitAll())        // all request temporarily permitted
                 .authorizeHttpRequests( authorize -> authorize
+                        .requestMatchers(noauthResourceUris)
+                        .permitAll()
                         .anyRequest().authenticated())        //all request require authentication
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(Customizer.withDefaults()))
