@@ -26,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
     public void placeOrder(OrderRequest orderRequest) {
 
         //check inventory
-        boolean isProductInStock = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
+        var isProductInStock = inventoryClient.isInStock(orderRequest.skuCode(), orderRequest.quantity());
 
         if(isProductInStock) {
             Order order = Order.builder()

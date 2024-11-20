@@ -1,5 +1,6 @@
 package ca.gbc.orderservice;
 
+import ca.gbc.orderservice.stub.InventoryClientStub;
 import io.restassured.RestAssured;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +47,10 @@ class OrderServiceApplicationTests {
                 }
                 
                 """;
+
+        // Week 10
+        // Mock a call to inventory service
+        InventoryClientStub.stubInventoryCall("samsung_tv_2024", 10);
 
         var responseBodyString = RestAssured.given()
                 .contentType("application/json")
