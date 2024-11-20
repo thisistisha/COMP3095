@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Import;
 import org.testcontainers.containers.MongoDBContainer;
 
 // Tells springBoot to look for a main configuration class (@springbootApplication)
@@ -55,7 +54,7 @@ class ProductServiceApplicationTests {
 				.when()
 				.post("/api/product")// Perform the POST request to the /api/product endpoint
 				.then()
-				.log().all() // Log the response details
+				.log().all() // Log the response detail
 				.statusCode(201)  // Assert that the HTTP status code is 201 Created
 				.body("id", Matchers.notNullValue())  // Assert that the returned product has a non-null ID
 				.body("name", Matchers.equalTo("Samsung TV"))  // Assert that the product's name matches
