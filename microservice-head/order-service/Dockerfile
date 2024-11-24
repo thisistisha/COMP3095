@@ -24,7 +24,7 @@ ENV POSTGRES_DB=orderservice \
     POSTGRES_PASSWORD=password
 
 # Expose the application port
-EXPOSE 9001
+EXPOSE 8085
 
 # Entry point for running the application
 ENTRYPOINT ["java", "-jar", "/app/order-service.jar"]

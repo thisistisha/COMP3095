@@ -7,12 +7,12 @@ services:
   Order-service:
     image: postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     container_name: postgres-order
     environment:
       - POSTGRES_USER=rootadmin
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB= order-service
+      - POSTGRES_DB=order-service
     volumes:
       - ./data/order:/var/lib/postgresql/data
       - ./init/order/init.sql:/docker-entrypoint-initdb.d/init.sql
