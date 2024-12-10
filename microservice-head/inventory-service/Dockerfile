@@ -22,7 +22,7 @@ ENV POSTGRES_USER=rootadmin \
     POSTGRES_PASSWORD=password
 
 # Expose the port the service will run on
-EXPOSE 8087
+EXPOSE 8086
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/inventory-service.jar"]
